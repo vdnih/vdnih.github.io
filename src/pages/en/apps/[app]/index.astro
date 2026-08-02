@@ -1,0 +1,10 @@
+---
+import AppDetail from '../../../../components/AppDetail.astro';
+import { getAppPaths } from '../../../../lib/apps';
+
+export const getStaticPaths = getAppPaths;
+
+const { app } = Astro.props;
+---
+
+<AppDetail app={app} />

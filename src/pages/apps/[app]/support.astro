@@ -1,0 +1,10 @@
+---
+import AppSupport from '../../../components/AppSupport.astro';
+import { getAppPaths } from '../../../lib/apps';
+
+export const getStaticPaths = getAppPaths;
+
+const { app } = Astro.props;
+---
+
+<AppSupport app={app} />

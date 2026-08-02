@@ -1,0 +1,57 @@
+---
+import { getEntry, render } from 'astro:content';
+import LegalLayout from '../layouts/LegalLayout.astro';
+import ContactBlock from './ContactBlock.astro';
+import DataCollectionTable from './DataCollectionTable.astro';
+import ThirdPartyTable from './ThirdPartyTable.astro';
+import type { StoreApp } from '../data/types';
+import { appPath } from '../lib/apps';
+import { getLangFromUrl, localizePath, useTranslations } from '../i18n/utils';
+
+interface Props {
+  app: StoreApp;
+}
+
+const { app } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// 本文は Markdown、表は apps.json から。
+// 前半 → 収集する情報の表 → 外部サービスの表 → 後半、の順で組み立てる。
+const intro = await getEntry('legal', `${lang}/${app.id}/privacy-1`);
+const rest = await getEntry('legal', `${lang}/${app.id}/privacy-2`);
+
+if (!intro || !rest) {
+  throw new Error(
+    `Missing privacy policy content for "${app.id}" (${lang}). ` +
+      `Expected src/content/legal/${lang}/${app.id}/privacy-1.md and privacy-2.md`,
+  );
+}
+
+const { Content: Intro } = await render(intro);
+const { Content: Rest } = await render(rest);
+
+const title = `${app.name} ${t('legal.privacy')}`;
+---
+
+<LegalLayout
+  title={title}
+  description={`${app.name} — ${t('legal.privacy')}`}
+  updatedAt={app.policyUpdatedAt}
+  crumbs={[
+    { label: t('nav.home'), href: localizePath('/', lang) },
+    { label: t('nav.apps'), href: localizePath('/apps/', lang) },
+    { label: app.name, href: appPath(app.id, '', lang) },
+    { label: t('legal.privacy') },
+  ]}
+>
+  <div class="prose"><Intro /></div>
+
+  <DataCollectionTable app={app} />
+  <ThirdPartyTable app={app} />
+
+  <div class="prose"><Rest /></div>
+
+  <ContactBlock lead={t('privacy.contactBody')} />
+</LegalLayout>

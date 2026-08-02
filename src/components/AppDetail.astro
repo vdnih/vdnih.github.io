@@ -1,0 +1,220 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StoreBadges from './StoreBadges.astro';
+import type { StoreApp } from '../data/types';
+import { appPath, toParagraphs } from '../lib/apps';
+import { getLangFromUrl, localizePath, useTranslations } from '../i18n/utils';
+
+interface Props {
+  app: StoreApp;
+}
+
+const { app } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const stageLabel = {
+  development: t('app.stage.development'),
+  testing: t('app.stage.testing'),
+  released: t('app.stage.released'),
+}[app.stage];
+
+const platformLabels = app.platforms.map((platform) =>
+  platform === 'ios' ? t('app.platform.ios') : t('app.platform.android'),
+);
+
+const paragraphs = toParagraphs(app.description[lang]);
+
+const legalLinks = [
+  { label: t('legal.support'), href: appPath(app.id, 'support', lang) },
+  { label: t('legal.privacy'), href: appPath(app.id, 'privacy', lang) },
+  { label: t('legal.terms'), href: appPath(app.id, 'terms', lang) },
+  ...(app.hasAccounts
+    ? [{ label: t('legal.deleteAccount'), href: appPath(app.id, 'delete-account', lang) }]
+    : []),
+];
+
+// ストア公開後、検索結果でアプリとして認識されるようにする
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: app.name,
+  description: app.tagline[lang],
+  applicationCategory: 'MobileApplication',
+  operatingSystem: app.platforms
+    .map((platform) => (platform === 'ios' ? 'iOS' : 'Android'))
+    .join(', '),
+  url: new URL(appPath(app.id, '', lang), Astro.site).href,
+  author: { '@type': 'Person', name: 'vdnih' },
+  ...(app.stores.appStore || app.stores.googlePlay
+    ? { sameAs: [app.stores.appStore, app.stores.googlePlay].filter(Boolean) }
+    : {}),
+};
+---
+
+<BaseLayout title={`${app.name} — vdnih`} description={app.tagline[lang]} jsonLd={jsonLd}>
+  <section class="app-hero">
+    <div class="container">
+      <nav aria-label="Breadcrumb">
+        <ol class="breadcrumb">
+          <li><a href={localizePath('/', lang)}>{t('nav.home')}</a></li>
+          <li><a href={localizePath('/apps/', lang)}>{t('nav.apps')}</a></li>
+          <li><span>{app.name}</span></li>
+        </ol>
+      </nav>
+
+      <div class="app-hero-inner">
+        {app.icon && (
+          <img class="app-icon" src={app.icon} alt="" width="96" height="96" decoding="async" />
+        )}
+        <div class="app-hero-text">
+          <div class="app-meta">
+            <span class={`stage stage-${app.stage}`}>{stageLabel}</span>
+            {platformLabels.map((label) => <span class="platform">{label}</span>)}
+          </div>
+          <h1>{app.name}</h1>
+          <p class="app-tagline">{app.tagline[lang]}</p>
+          <StoreBadges app={app} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-heading">{t('app.about')}</h2>
+      <div class="app-description">
+        {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+
+      {app.features.length > 0 && (
+        <>
+          <h2 class="section-heading features-heading">{t('app.features')}</h2>
+          <ul class="features">
+            {app.features.map((feature) => <li>{feature[lang]}</li>)}
+          </ul>
+        </>
+      )}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-heading">{t('app.legal')}</h2>
+      <ul class="legal-links">
+        {legalLinks.map((link) => (
+          <li><a class="button" href={link.href}>{link.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .app-hero {
+    padding-block: clamp(2rem, 6vw, 3.5rem) clamp(2.5rem, 7vw, 4rem);
+  }
+
+  .app-hero-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(1.25rem, 4vw, 2rem);
+  }
+
+  .app-icon {
+    flex: 0 0 auto;
+    width: clamp(64px, 12vw, 96px);
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 22%;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+  }
+
+  .app-hero-text {
+    min-width: 0;
+  }
+
+  .app-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .stage,
+  .platform {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.6rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+
+  .platform {
+    background: var(--bg-subtle);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+
+  .stage-released {
+    background: var(--status-active-bg);
+    color: var(--status-active);
+  }
+
+  .stage-testing {
+    background: var(--status-maintenance-bg);
+    color: var(--status-maintenance);
+  }
+
+  .stage-development {
+    background: var(--status-experiment-bg);
+    color: var(--status-experiment);
+  }
+
+  .app-hero h1 {
+    font-size: clamp(1.8rem, 5vw, 2.75rem);
+    margin-bottom: 0.6rem;
+  }
+
+  .app-tagline {
+    color: var(--text-muted);
+    max-width: 40rem;
+  }
+
+  .app-description {
+    max-width: 44rem;
+  }
+
+  .app-description p + p {
+    margin-top: 1.15rem;
+  }
+
+  .features-heading {
+    margin-top: 3rem;
+  }
+
+  .features {
+    max-width: 44rem;
+    padding-inline-start: 1.4rem;
+    list-style: disc;
+  }
+
+  .features li + li {
+    margin-top: 0.5rem;
+  }
+
+  .legal-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 34rem) {
+    .app-hero-inner {
+      flex-direction: column;
+    }
+  }
+</style>

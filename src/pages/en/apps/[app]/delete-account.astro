@@ -1,0 +1,12 @@
+---
+import AppDeleteAccount from '../../../../components/AppDeleteAccount.astro';
+import { getAccountAppPaths } from '../../../../lib/apps';
+
+// アカウントを持つアプリだけ生成する。
+// Google Play がアカウント削除 URL を要求するのはアカウント制のアプリのみ。
+export const getStaticPaths = getAccountAppPaths;
+
+const { app } = Astro.props;
+---
+
+<AppDeleteAccount app={app} />

@@ -6,17 +6,20 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const home = localizePath('/', lang);
 
+// トップ内のアンカーは、下層ページ（アプリ LP・法務文書）から辿れるよう
+// 常にホームへの絶対パスを前置する。
 const nav = [
-  { href: '#projects', label: t('nav.projects') },
-  { href: '#stack', label: t('nav.stack') },
-  { href: '#about', label: t('nav.about') },
+  { href: localizePath('/apps/', lang), label: t('nav.apps') },
+  { href: `${home}#projects`, label: t('nav.projects') },
+  { href: `${home}#stack`, label: t('nav.stack') },
+  { href: `${home}#about`, label: t('nav.about') },
 ];
 ---
 
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href={home}>vdnih</a>
-    <nav class="nav" aria-label={t('nav.projects')}>
+    <nav class="nav" aria-label={t('nav.apps')}>
       <ul>
         {nav.map((item) => (
           <li><a href={item.href}>{item.label}</a></li>

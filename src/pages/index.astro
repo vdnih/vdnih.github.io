@@ -1,8 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeSections from '../components/HomeSections.astro';
+import { personJsonLd } from '../lib/apps';
+import { getLangFromUrl } from '../i18n/utils';
+
+const jsonLd = personJsonLd(getLangFromUrl(Astro.url), Astro.site);
 ---
 
-<BaseLayout>
+<BaseLayout jsonLd={jsonLd}>
   <HomeSections />
 </BaseLayout>

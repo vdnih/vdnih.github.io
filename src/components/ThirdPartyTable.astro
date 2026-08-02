@@ -1,0 +1,62 @@
+---
+import type { StoreApp } from '../data/types';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+interface Props {
+  app: StoreApp;
+}
+
+const { app } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section>
+  <h2>{t('privacy.thirdTitle')}</h2>
+
+  {app.thirdParties.length === 0 ? (
+    <p>{t('privacy.thirdEmpty')}</p>
+  ) : (
+    <>
+      <p>{t('privacy.thirdLead')}</p>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th scope="col">{t('privacy.col.service')}</th>
+              <th scope="col">{t('privacy.col.role')}</th>
+              <th scope="col">{t('privacy.col.policy')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {app.thirdParties.map((party) => (
+              <tr>
+                <th scope="row">{party.name}</th>
+                <td data-label={t('privacy.col.role')}>{party.role[lang]}</td>
+                <td data-label={t('privacy.col.policy')}>
+                  <a href={party.privacyUrl} rel="noopener" target="_blank">
+                    {t('privacy.col.policy')}
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  )}
+</section>
+
+<style>
+  h2 {
+    font-size: 1.25rem;
+    margin-block-start: 2.75rem;
+    padding-block-end: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  p {
+    margin-block: 1.15rem;
+  }
+</style>

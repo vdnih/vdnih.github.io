@@ -1,0 +1,27 @@
+---
+import { getEntry, render } from 'astro:content';
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { getLangFromUrl, localizePath, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const entry = await getEntry('legal', `${lang}/site/privacy`);
+
+if (!entry) {
+  throw new Error(`Missing site privacy content (${lang}).`);
+}
+
+const { Content } = await render(entry);
+---
+
+<LegalLayout
+  title={t('sitePrivacy.title')}
+  description={t('sitePrivacy.title')}
+  crumbs={[
+    { label: t('nav.home'), href: localizePath('/', lang) },
+    { label: t('sitePrivacy.title') },
+  ]}
+>
+  <div class="prose"><Content /></div>
+</LegalLayout>

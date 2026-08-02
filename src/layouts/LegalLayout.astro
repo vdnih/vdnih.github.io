@@ -1,0 +1,63 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { formatDate } from '../lib/apps';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  /** 法務文書の最終更新日 YYYY-MM-DD。渡すと見出しの下に表示する */
+  updatedAt?: string;
+  /** パンくず。末尾の現在地は href なしで渡す */
+  crumbs?: Crumb[];
+}
+
+const { title, description, updatedAt, crumbs = [] } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<BaseLayout title={`${title} — vdnih`} description={description}>
+  <div class="page-header">
+    <div class="container narrow">
+      {crumbs.length > 0 && (
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb">
+            {crumbs.map((crumb) => (
+              <li>
+                {crumb.href ? <a href={crumb.href}>{crumb.label}</a> : <span>{crumb.label}</span>}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+      <h1 class="page-title">{title}</h1>
+      {updatedAt && (
+        <p class="page-meta">
+          {t('legal.lastUpdated')}: <time datetime={updatedAt}>{formatDate(updatedAt, lang)}</time>
+        </p>
+      )}
+    </div>
+  </div>
+
+  <div class="container narrow legal-body">
+    <slot />
+  </div>
+</BaseLayout>
+
+<style>
+  .legal-body {
+    padding-block: clamp(2rem, 6vw, 3rem) clamp(3rem, 9vw, 5rem);
+  }
+
+  /* 法務文書はセクションが連続するので、間隔をまとめてここで管理する */
+  .legal-body > :global(* + *) {
+    margin-block-start: 1.15rem;
+  }
+</style>

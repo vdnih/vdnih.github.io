@@ -1,0 +1,90 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import ContactBlock from './ContactBlock.astro';
+import type { StoreApp } from '../data/types';
+import { appPath } from '../lib/apps';
+import { getLangFromUrl, localizePath, useTranslations } from '../i18n/utils';
+
+interface Props {
+  app: StoreApp;
+}
+
+const { app } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const tips = [t('support.tip.device'), t('support.tip.version'), t('support.tip.steps')];
+
+const related = [
+  { label: t('legal.privacy'), href: appPath(app.id, 'privacy', lang) },
+  { label: t('legal.terms'), href: appPath(app.id, 'terms', lang) },
+  ...(app.hasAccounts
+    ? [{ label: t('legal.deleteAccount'), href: appPath(app.id, 'delete-account', lang) }]
+    : []),
+];
+---
+
+<LegalLayout
+  title={`${app.name} ${t('legal.support')}`}
+  description={`${app.name} — ${t('legal.support')}`}
+  crumbs={[
+    { label: t('nav.home'), href: localizePath('/', lang) },
+    { label: t('nav.apps'), href: localizePath('/apps/', lang) },
+    { label: app.name, href: appPath(app.id, '', lang) },
+    { label: t('legal.support') },
+  ]}
+>
+  <p>{t('support.lead')}</p>
+
+  {/*
+    App Review はスマートフォンでこのページを開き、連絡手段が見つかるかを確認する
+    （Guideline 1.5）。そのため連絡先ブロックはページ最上部に置き、
+    スクロールしなくても見えるようにしている。
+  */}
+  <ContactBlock heading={t('support.emailLabel')} lead={t('support.responseNote')} />
+
+  <section class="support-section">
+    <h2>{t('support.tips')}</h2>
+    <ul class="tips">
+      {tips.map((tip) => <li>{tip}</li>)}
+    </ul>
+  </section>
+
+  <section class="support-section">
+    <h2>{t('support.related')}</h2>
+    <ul class="related">
+      {related.map((item) => (
+        <li><a href={item.href}>{item.label}</a></li>
+      ))}
+    </ul>
+  </section>
+</LegalLayout>
+
+<style>
+  .support-section {
+    margin-block-start: 2.75rem;
+  }
+
+  .support-section h2 {
+    font-size: 1.05rem;
+    margin-block-end: 0.9rem;
+  }
+
+  .tips {
+    padding-inline-start: 1.4rem;
+    list-style: disc;
+    color: var(--text-muted);
+  }
+
+  .tips li + li {
+    margin-block-start: 0.4rem;
+  }
+
+  .related {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    font-size: 0.92rem;
+  }
+</style>

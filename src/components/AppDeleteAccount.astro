@@ -1,0 +1,111 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import ContactBlock from './ContactBlock.astro';
+import type { StoreApp } from '../data/types';
+import { appPath } from '../lib/apps';
+import { getLangFromUrl, localizePath, useTranslations } from '../i18n/utils';
+
+interface Props {
+  app: StoreApp;
+}
+
+const { app } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const steps = [t('delete.inApp.step1'), t('delete.inApp.step2'), t('delete.inApp.step3')];
+
+// 削除されるデータは apps.json の収集データから導く。
+// 収集項目を足したのに削除の説明を直し忘れる、という食い違いが起きなくなる。
+const deletedItems = app.dataCollected.map((entry) => ({
+  label: entry.label[lang],
+  items: entry.items[lang],
+}));
+
+const retention = t('delete.retentionBody').replace('{days}', String(app.deletionGraceDays));
+
+const subject = lang === 'ja' ? `アカウント削除希望 (${app.name})` : `Delete my account (${app.name})`;
+---
+
+<LegalLayout
+  title={`${app.name} ${t('legal.deleteAccount')}`}
+  description={`${app.name} — ${t('delete.title')}`}
+  updatedAt={app.policyUpdatedAt}
+  crumbs={[
+    { label: t('nav.home'), href: localizePath('/', lang) },
+    { label: t('nav.apps'), href: localizePath('/apps/', lang) },
+    { label: app.name, href: appPath(app.id, '', lang) },
+    { label: t('legal.deleteAccount') },
+  ]}
+>
+  <p>{t('delete.lead')}</p>
+
+  <section class="delete-section">
+    <h2>{t('delete.inAppTitle')}</h2>
+    <p class="lead">{t('delete.inAppLead')}</p>
+    <ol class="steps">
+      {steps.map((step) => <li>{step}</li>)}
+    </ol>
+  </section>
+
+  <section class="delete-section">
+    <h2>{t('delete.webTitle')}</h2>
+    <p class="lead">{t('delete.webLead')}</p>
+    <ContactBlock heading={t('legal.deleteAccount')} subject={subject} level={3} />
+  </section>
+
+  <section class="delete-section">
+    <h2>{t('delete.deletedTitle')}</h2>
+    <p class="lead">{t('delete.deletedLead')}</p>
+    <ul class="deleted">
+      {deletedItems.map((entry) => (
+        <li><strong>{entry.label}</strong> — {entry.items}</li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="delete-section">
+    <h2>{t('delete.retentionTitle')}</h2>
+    <p class="callout callout-accent">{retention}</p>
+    <p class="lead legal-note">{t('delete.retentionLegal')}</p>
+  </section>
+</LegalLayout>
+
+<style>
+  .delete-section {
+    margin-block-start: 2.75rem;
+  }
+
+  .delete-section h2 {
+    font-size: 1.15rem;
+    padding-block-end: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-block-end: 1.15rem;
+  }
+
+  .lead {
+    margin-block-end: 1.15rem;
+  }
+
+  .steps {
+    padding-inline-start: 1.5rem;
+    list-style: decimal;
+  }
+
+  .deleted {
+    padding-inline-start: 1.4rem;
+    list-style: disc;
+  }
+
+  .steps li + li,
+  .deleted li + li {
+    margin-block-start: 0.5rem;
+  }
+
+  .legal-note {
+    margin-block-start: 1.15rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+</style>

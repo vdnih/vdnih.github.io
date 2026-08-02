@@ -125,7 +125,8 @@ img {
   height: auto;
 }
 
-ul {
+ul,
+ol {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -187,4 +188,251 @@ ul {
 .skip-link:focus {
   left: 1rem;
   top: 1rem;
+}
+
+/* ---- ボタン ----
+   Hero・アプリ LP・サポートページで共通に使う。 */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.15rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.button:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.button-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+
+.button-primary:hover {
+  color: var(--bg);
+  filter: brightness(1.08);
+}
+
+/* ---- 下層ページ（法務文書・サポート） ----
+   トップより読ませる密度が高いので、本文幅を狭くする。 */
+
+.narrow {
+  max-width: 46rem;
+}
+
+.page-header {
+  padding-block: clamp(2.5rem, 7vw, 4rem) clamp(1.5rem, 4vw, 2.25rem);
+  border-bottom: 1px solid var(--border);
+}
+
+.page-title {
+  font-size: clamp(1.7rem, 4.5vw, 2.4rem);
+  margin-block: 0.5rem 0.75rem;
+}
+
+.page-meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.breadcrumb li::after {
+  content: '/';
+  margin-inline-start: 0.4rem;
+  color: var(--border-strong);
+}
+
+.breadcrumb li:last-child::after {
+  content: none;
+}
+
+.breadcrumb a {
+  color: var(--text-muted);
+}
+
+/* ---- 本文タイポグラフィ ----
+   Markdown から生成される法務文書に当てる。
+   グローバルリセットで list-style を消しているので、ここで復帰させる。 */
+
+.prose {
+  max-width: 46rem;
+}
+
+.prose > * + * {
+  margin-block-start: 1.15rem;
+}
+
+.prose h2 {
+  font-size: 1.25rem;
+  margin-block-start: 2.75rem;
+  padding-block-end: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose h3 {
+  font-size: 1.05rem;
+  margin-block-start: 2rem;
+}
+
+.prose ul,
+.prose ol {
+  padding-inline-start: 1.4rem;
+  list-style: revert;
+}
+
+.prose li + li {
+  margin-block-start: 0.4rem;
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  padding: 0.15em 0.4em;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.prose blockquote {
+  margin-inline: 0;
+  padding-inline-start: 1rem;
+  border-inline-start: 3px solid var(--border-strong);
+  color: var(--text-muted);
+}
+
+/* ---- 注意書き ---- */
+
+.callout {
+  padding: 1rem 1.15rem;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+}
+
+.callout-accent {
+  background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* ---- 表 ----
+   収集データ一覧など。狭い画面では横スクロールさせ、
+   ページ自体が横に伸びないようにする。 */
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.data-table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.data-table th,
+.data-table td {
+  padding: 0.75rem 0.9rem;
+  text-align: start;
+  vertical-align: top;
+  border-block-end: 1px solid var(--border);
+}
+
+.data-table th {
+  background: var(--bg-subtle);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.data-table tbody tr:last-child th,
+.data-table tbody tr:last-child td {
+  border-block-end: none;
+}
+
+/* 狭い画面では行をカードに畳む。
+   審査担当もユーザーもスマートフォンでポリシーを読むため、
+   横スクロールしないと内容が分からない状態は避ける。
+   各セルの見出しは data-label 属性から出す。 */
+@media (max-width: 40rem) {
+  .table-scroll {
+    overflow-x: visible;
+    border: none;
+    border-radius: 0;
+  }
+
+  .data-table,
+  .data-table tbody,
+  .data-table tr,
+  .data-table th,
+  .data-table td {
+    display: block;
+    min-width: 0;
+  }
+
+  .data-table thead {
+    display: none;
+  }
+
+  .data-table tr {
+    margin-block-end: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .data-table tbody tr:last-child {
+    margin-block-end: 0;
+  }
+
+  .data-table tbody th[scope='row'] {
+    background: var(--bg-subtle);
+    white-space: normal;
+    border-block-end: 1px solid var(--border);
+  }
+
+  .data-table td {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem 0.75rem;
+    border-block-end: 1px solid var(--border);
+  }
+
+  .data-table tr td:last-child {
+    border-block-end: none;
+  }
+
+  .data-table td::before {
+    content: attr(data-label);
+    flex: 0 0 5.5rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
 }

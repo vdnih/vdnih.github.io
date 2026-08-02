@@ -1,0 +1,66 @@
+---
+import type { StoreApp } from '../data/types';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+interface Props {
+  app: StoreApp;
+}
+
+const { app } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section>
+  <h2>{t('privacy.dataTitle')}</h2>
+
+  {app.dataCollected.length === 0 ? (
+    <p>{t('privacy.dataEmpty')}</p>
+  ) : (
+    <>
+      <p>{t('privacy.dataLead')}</p>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th scope="col">{t('privacy.col.category')}</th>
+              <th scope="col">{t('privacy.col.items')}</th>
+              <th scope="col">{t('privacy.col.purpose')}</th>
+              <th scope="col">{t('privacy.col.shared')}</th>
+              <th scope="col">{t('privacy.col.required')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {app.dataCollected.map((entry) => (
+              <tr>
+                <th scope="row">{entry.label[lang]}</th>
+                <td data-label={t('privacy.col.items')}>{entry.items[lang]}</td>
+                <td data-label={t('privacy.col.purpose')}>{entry.purpose[lang]}</td>
+                <td data-label={t('privacy.col.shared')}>
+                  {entry.shared ? t('privacy.yes') : t('privacy.no')}
+                </td>
+                <td data-label={t('privacy.col.required')}>
+                  {entry.optional ? t('privacy.optional') : t('privacy.required')}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  )}
+</section>
+
+<style>
+  h2 {
+    font-size: 1.25rem;
+    margin-block-start: 2.75rem;
+    padding-block-end: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  p {
+    margin-block: 1.15rem;
+  }
+</style>

@@ -1,0 +1,70 @@
+---
+import type { StoreApp } from '../data/types';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+interface Props {
+  app: StoreApp;
+}
+
+const { app } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// 公式のストアバッジ画像は配布条件が細かいので、公開が決まるまではテキストボタンで出す。
+// URL が入るまでは「準備中」を出し、リンク切れをストアに登録してしまう事故を防ぐ。
+const links = [
+  {
+    label: t('app.store.appStore'),
+    platformLabel: t('app.platform.ios'),
+    url: app.stores.appStore,
+    platform: 'ios' as const,
+  },
+  {
+    label: t('app.store.googlePlay'),
+    platformLabel: t('app.platform.android'),
+    url: app.stores.googlePlay,
+    platform: 'android' as const,
+  },
+].filter((link) => app.platforms.includes(link.platform));
+
+const available = links.filter((link) => link.url);
+---
+
+{
+  available.length > 0 ? (
+    <div class="store-badges">
+      {available.map((link) => (
+        <a class="button button-primary" href={link.url} rel="noopener" target="_blank">
+          {link.label}
+        </a>
+      ))}
+    </div>
+  ) : (
+    <p class="store-pending">
+      {t('app.comingSoon')}
+      {' — '}
+      {links.map((link) => link.platformLabel).join(' / ')}
+    </p>
+  )
+}
+
+<style>
+  .store-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .store-pending {
+    margin-top: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.9rem;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-pill);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+</style>

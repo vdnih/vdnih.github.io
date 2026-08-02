@@ -1,0 +1,10 @@
+---
+import AppTerms from '../../../../components/AppTerms.astro';
+import { getAppPaths } from '../../../../lib/apps';
+
+export const getStaticPaths = getAppPaths;
+
+const { app } = Astro.props;
+---
+
+<AppTerms app={app} />

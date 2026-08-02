@@ -10,9 +10,12 @@
     "preview": "astro preview",
     "check": "astro check",
     "sync": "node scripts/sync-repos.mjs",
+    "preflight": "node scripts/preflight.mjs",
+    "images": "node scripts/generate-images.mjs",
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.0",
     "astro": "^7.1.6"
   },
   "devDependencies": {

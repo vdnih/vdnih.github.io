@@ -1,0 +1,14 @@
+{
+  "name": "vdnih",
+  "short_name": "vdnih",
+  "description": "個人開発者 vdnih のポートフォリオ",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#14130f",
+  "theme_color": "#1d1b17",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

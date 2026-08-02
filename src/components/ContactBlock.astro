@@ -1,0 +1,76 @@
+---
+import { supportEmail, supportEmailReady } from '../lib/apps';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+interface Props {
+  /** 見出しの文言。省略時は「お問い合わせ」 */
+  heading?: string;
+  /** 見出しの下に置く説明文 */
+  lead?: string;
+  /** 件名を差し込みたい場合（アカウント削除リクエストなど） */
+  subject?: string;
+  /** h2 ではなく h3 として出したいとき */
+  level?: 2 | 3;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const { heading = t('privacy.contactTitle'), lead, subject, level = 2 } = Astro.props;
+
+const Heading = level === 3 ? 'h3' : 'h2';
+
+// 連絡先が未設定のまま公開されると、ストア審査で確実に問題になる。
+// 偽のアドレスを表示するくらいなら「準備中」と出したほうが安全なので、
+// プレースホルダのときは mailto を組み立てない。
+const mailto = supportEmailReady
+  ? `mailto:${supportEmail}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`
+  : null;
+---
+
+<section class="contact-block">
+  <Heading>{heading}</Heading>
+  {lead && <p class="contact-lead">{lead}</p>}
+
+  {mailto ? (
+    <p class="contact-email">
+      <a href={mailto}>{supportEmail}</a>
+    </p>
+  ) : (
+    <p class="contact-pending">{t('support.emailPending')}</p>
+  )}
+</section>
+
+<style>
+  .contact-block {
+    margin-block-start: 2.75rem;
+    padding: 1.25rem 1.4rem;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .contact-block :global(h2),
+  .contact-block :global(h3) {
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  .contact-lead {
+    margin-block-start: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+
+  /* 審査担当はスマートフォンで開くため、連絡先は小さくしすぎない */
+  .contact-email {
+    margin-block-start: 0.75rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+
+  .contact-pending {
+    margin-block-start: 0.75rem;
+    color: var(--text-muted);
+  }
+</style>

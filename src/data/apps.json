@@ -1,0 +1,88 @@
+[
+  {
+    "id": "friendnote",
+    "name": "friendnote",
+    "platforms": ["ios", "android"],
+    "stage": "development",
+    "stores": {
+      "appStore": null,
+      "googlePlay": null
+    },
+    "icon": null,
+    "tagline": {
+      "ja": "（要記入）アプリを一言で表すキャッチコピー",
+      "en": "(TO BE FILLED) One-line description of the app"
+    },
+    "description": {
+      "ja": "（要記入）アプリが何をするものかを 2〜3 文で説明します。ストアの説明文と揃えると、審査担当がアプリとサイトの一致を確認しやすくなります。\n\n（要記入）2 段落目。空行で区切ると段落になります。",
+      "en": "(TO BE FILLED) Describe what the app does in two or three sentences. Keeping this aligned with the store listing makes it easy for reviewers to confirm the site and the app match.\n\n(TO BE FILLED) Second paragraph. Blank lines separate paragraphs."
+    },
+    "features": [
+      { "ja": "（要記入）主な機能 1", "en": "(TO BE FILLED) Key feature 1" },
+      { "ja": "（要記入）主な機能 2", "en": "(TO BE FILLED) Key feature 2" },
+      { "ja": "（要記入）主な機能 3", "en": "(TO BE FILLED) Key feature 3" }
+    ],
+    "hasAccounts": true,
+    "deletionGraceDays": 30,
+    "dataCollected": [
+      {
+        "label": { "ja": "アカウント情報", "en": "Account info" },
+        "items": {
+          "ja": "メールアドレス、表示名、ユーザー ID",
+          "en": "Email address, display name, user ID"
+        },
+        "purpose": {
+          "ja": "アカウントの作成と認証、端末をまたいだデータの同期",
+          "en": "Creating and authenticating your account, and syncing data across devices"
+        },
+        "shared": false,
+        "optional": false
+      },
+      {
+        "label": { "ja": "ユーザーが入力したコンテンツ", "en": "User-generated content" },
+        "items": {
+          "ja": "アプリ内で作成したノート・記録などのデータ",
+          "en": "Notes and records you create in the app"
+        },
+        "purpose": {
+          "ja": "アプリの中核的な機能の提供とデータの保存",
+          "en": "Providing and storing the core functionality of the app"
+        },
+        "shared": false,
+        "optional": false
+      },
+      {
+        "label": { "ja": "クラッシュ・診断情報", "en": "Crash and diagnostic data" },
+        "items": {
+          "ja": "クラッシュログ、端末モデル、OS バージョン",
+          "en": "Crash logs, device model, OS version"
+        },
+        "purpose": {
+          "ja": "不具合の調査と品質改善",
+          "en": "Investigating bugs and improving quality"
+        },
+        "shared": true,
+        "optional": false
+      }
+    ],
+    "thirdParties": [
+      {
+        "name": "Firebase Authentication",
+        "role": { "ja": "アカウントの認証", "en": "Account authentication" },
+        "privacyUrl": "https://firebase.google.com/support/privacy"
+      },
+      {
+        "name": "Cloud Firestore",
+        "role": { "ja": "アプリデータの保存と同期", "en": "Storing and syncing app data" },
+        "privacyUrl": "https://firebase.google.com/support/privacy"
+      },
+      {
+        "name": "Firebase Crashlytics",
+        "role": { "ja": "クラッシュレポートの収集", "en": "Collecting crash reports" },
+        "privacyUrl": "https://firebase.google.com/support/privacy"
+      }
+    ],
+    "policyUpdatedAt": "2026-08-02",
+    "draft": true
+  }
+]

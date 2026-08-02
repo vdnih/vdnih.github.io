@@ -1,0 +1,10 @@
+---
+import AppPrivacy from '../../../../components/AppPrivacy.astro';
+import { getAppPaths } from '../../../../lib/apps';
+
+export const getStaticPaths = getAppPaths;
+
+const { app } = Astro.props;
+---
+
+<AppPrivacy app={app} />

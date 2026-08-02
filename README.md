@@ -18,6 +18,8 @@ npm run dev      # http://localhost:4321
 | `npm run preview` | ビルド結果をローカルで確認 |
 | `npm run check` | `astro check`（型チェック） |
 | `npm run sync` | 掲載リポジトリの最終更新日・ライセンスを GitHub API から取り直す |
+| `npm run preflight` | ストア提出前チェック（未記入のプレースホルダが残っていないか） |
+| `npm run images` | OGP 画像とアイコンを `public/` に再生成 |
 
 ## 掲載内容の編集
 
@@ -35,6 +37,33 @@ UI のラベル（見出し・ボタン文言など）は `src/i18n/ui.ts` に�
 
 `npm run sync` は `projects.json` の `updatedAt` と `license` だけを GitHub API の値で更新します。`homepage` や `description` は手で書いた値のほうが正確なので上書きしません。
 
+## ストア配信アプリ
+
+App Store / Google Play に出すアプリは、GitHub リポジトリのショーケースである `projects.json` とは別に **`src/data/apps.json`** で管理します。ストアリンク・収集データ・法務文書・サポート窓口という追加情報が必要なためです。
+
+アプリを 1 件足すと、次のページが ja / en の両方に生成されます。
+
+| ルート | 用途 | 要求元 |
+| --- | --- | --- |
+| `/apps/{id}/` | アプリ紹介 | Apple の Marketing URL / Play の Website |
+| `/apps/{id}/privacy/` | プライバシーポリシー | **Apple・Google 両方で必須** |
+| `/apps/{id}/support/` | サポート | **Apple Guideline 1.5 で必須** |
+| `/apps/{id}/terms/` | 利用規約 | 任意 |
+| `/apps/{id}/delete-account/` | アカウント削除の受付 | **`hasAccounts: true` のとき Google Play で必須** |
+
+- 収集データの表は `apps.json` の `dataCollected` から生成されます。**Play の Data safety フォームおよび Apple の App Privacy 申告と必ず一致させてください。**申告と本文の食い違いは審査落ちの定番です。
+- ポリシーの散文は `src/content/legal/{lang}/{appId}/*.md` に置きます。プライバシーポリシーが `privacy-1.md` と `privacy-2.md` に分かれているのは、その間に上記の表を差し込むためです。
+- 連絡先メールは `profile.json` の `supportEmail` 1 箇所だけで管理します。未設定のあいだは各ページに「準備中」と表示され、偽のアドレスが出ることはありません。
+
+提出前に必ず実行してください。
+
+```sh
+npm run preflight            # 全アプリ
+npm run preflight friendnote # 特定のアプリ
+```
+
+`draft: true` のまま、あるいは `（要記入）` が残っているとここで落ちます。
+
 ## デプロイ
 
 `main` への push で `.github/workflows/deploy.yml` が走り、GitHub Pages へ公開されます。
@@ -48,12 +77,14 @@ Pull Request と `main` 以外への push では `.github/workflows/ci.yml` が�
 
 ```
 src/
-├── components/   # Header / Hero / ProjectCard / TechStack など
-├── data/         # profile.json / projects.json / types.ts
-├── i18n/         # UI ラベル辞書とロケール解決ユーティリティ
-├── layouts/      # BaseLayout（<head>・OGP・hreflang）
-├── pages/        # index.astro（ja）/ en/index.astro / 404.astro
-└── styles/       # global.css（カスタムプロパティ・ライト/ダーク）
+├── components/     # Header / Hero / ProjectCard / AppDetail / 法務ページ本体 など
+├── content/legal/  # 法務文書の Markdown（{lang}/{appId|site}/*.md）
+├── data/           # profile.json / projects.json / apps.json / types.ts
+├── i18n/           # UI ラベル辞書とロケール解決ユーティリティ
+├── layouts/        # BaseLayout（<head>・OGP・hreflang）/ LegalLayout
+├── lib/            # apps.ts（アプリ取得・パス生成・構造化データ）
+├── pages/          # ja は直下、en は en/ 配下。中身は数行のラッパー
+└── styles/         # global.css（カスタムプロパティ・ライト/ダーク）
 ```
 
-ja / en のページはどちらも `HomeSections.astro` を呼ぶだけで、文言の分岐は i18n 辞書と `description[lang]` に寄せています。マークアップを二重に持たない構成です。
+ページの実体はすべて `components/` にあり、`pages/` 配下の ja / en 両方のファイルはそれを呼ぶだけです。文言の分岐は i18n 辞書と `Localized` 型のデータに寄せているので、マークアップを二重に持ちません。ページを 1 つ足すときは `src/pages/` と `src/pages/en/` の両方にラッパーを置き、`src/i18n/ui.ts` の `ja` / `en` 双方にキーを足してください（片方だけだと型エラーでビルドが落ちます）。

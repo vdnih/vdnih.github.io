@@ -1,0 +1,43 @@
+---
+import { getEntry, render } from 'astro:content';
+import LegalLayout from '../layouts/LegalLayout.astro';
+import ContactBlock from './ContactBlock.astro';
+import type { StoreApp } from '../data/types';
+import { appPath } from '../lib/apps';
+import { getLangFromUrl, localizePath, useTranslations } from '../i18n/utils';
+
+interface Props {
+  app: StoreApp;
+}
+
+const { app } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const entry = await getEntry('legal', `${lang}/${app.id}/terms`);
+
+if (!entry) {
+  throw new Error(
+    `Missing terms content for "${app.id}" (${lang}). ` +
+      `Expected src/content/legal/${lang}/${app.id}/terms.md`,
+  );
+}
+
+const { Content } = await render(entry);
+---
+
+<LegalLayout
+  title={`${app.name} ${t('legal.terms')}`}
+  description={`${app.name} — ${t('legal.terms')}`}
+  updatedAt={app.policyUpdatedAt}
+  crumbs={[
+    { label: t('nav.home'), href: localizePath('/', lang) },
+    { label: t('nav.apps'), href: localizePath('/apps/', lang) },
+    { label: app.name, href: appPath(app.id, '', lang) },
+    { label: t('legal.terms') },
+  ]}
+>
+  <div class="prose"><Content /></div>
+  <ContactBlock />
+</LegalLayout>

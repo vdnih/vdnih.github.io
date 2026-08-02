@@ -16,8 +16,7 @@ const activeCount = projects.filter((p) => p.status === 'active').length;
 const techCount = new Set(projects.flatMap((p) => p.tech)).size;
 
 // 一番古いプロダクトではなく GitHub アカウント開設年からの通算
-const startYear = 2017;
-const years = new Date().getFullYear() - startYear;
+const years = new Date().getFullYear() - profile.startYear;
 
 const stats = [
   { value: String(projects.length), label: t('hero.stats.projects') },
@@ -106,35 +105,7 @@ const githubUrl = profile.links.find((link) => link.label === 'GitHub')?.url ?? 
     margin-top: 1.75rem;
   }
 
-  .button {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.55rem 1.15rem;
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-pill);
-    background: var(--bg-elevated);
-    color: var(--text);
-    font-size: 0.92rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
-  }
-
-  .button:hover {
-    border-color: var(--accent);
-    color: var(--text);
-  }
-
-  .button-primary {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--bg);
-  }
-
-  .button-primary:hover {
-    color: var(--bg);
-    filter: brightness(1.08);
-  }
+  /* .button / .button-primary は global.css で共有している */
 
   .stats {
     display: grid;

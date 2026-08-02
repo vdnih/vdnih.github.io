@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { appPath, apps } from '../lib/apps';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const stageLabels = {
+  development: t('app.stage.development'),
+  testing: t('app.stage.testing'),
+  released: t('app.stage.released'),
+};
+---
+
+<BaseLayout title={`${t('apps.title')} — vdnih`} description={t('apps.lead')}>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">vdnih</p>
+      <h1 class="section-heading">{t('apps.title')}</h1>
+      <p class="section-lead">{t('apps.lead')}</p>
+
+      {apps.length === 0 ? (
+        <p>{t('apps.empty')}</p>
+      ) : (
+        <ul class="app-grid">
+          {apps.map((app) => (
+            <li class="app-card">
+              <div class="app-card-head">
+                {app.icon && (
+                  <img src={app.icon} alt="" width="48" height="48" decoding="async" />
+                )}
+                <div>
+                  <h2><a href={appPath(app.id, '', lang)}>{app.name}</a></h2>
+                  <p class="stage">{stageLabels[app.stage]}</p>
+                </div>
+              </div>
+              <p class="tagline">{app.tagline[lang]}</p>
+              <p class="more">
+                <a href={appPath(app.id, '', lang)}>{t('apps.viewDetail')}</a>
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: 1rem;
+  }
+
+  .app-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .app-card-head {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .app-card img {
+    flex: 0 0 auto;
+    border-radius: 22%;
+    border: 1px solid var(--border);
+  }
+
+  .app-card h2 {
+    font-size: 1.1rem;
+  }
+
+  .app-card h2 a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .app-card h2 a:hover {
+    color: var(--accent-text);
+  }
+
+  .stage {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .tagline {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    flex: 1 1 auto;
+  }
+
+  .more {
+    font-size: 0.88rem;
+  }
+</style>
