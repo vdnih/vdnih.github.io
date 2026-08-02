@@ -1,0 +1,72 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import type { Project } from '../data/types';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const featured = projects.filter((project) => project.featured);
+const others = projects.filter((project) => !project.featured);
+---
+
+<section class="section" id="projects">
+  <div class="container">
+    <h2 class="section-heading">{t('projects.title')}</h2>
+    <p class="section-lead">{t('projects.lead')}</p>
+
+    {featured.length > 0 && (
+      <>
+        <h3 class="group-heading">{t('projects.featured')}</h3>
+        <ul class="grid grid-featured">
+          {featured.map((project) => (
+            <li><ProjectCard project={project} large /></li>
+          ))}
+        </ul>
+      </>
+    )}
+
+    {others.length > 0 && (
+      <>
+        <h3 class="group-heading">{t('projects.others')}</h3>
+        <ul class="grid">
+          {others.map((project) => (
+            <li><ProjectCard project={project} /></li>
+          ))}
+        </ul>
+      </>
+    )}
+  </div>
+</section>
+
+<style>
+  .group-heading {
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
+    gap: 1.1rem;
+    margin-bottom: 3rem;
+  }
+
+  .grid:last-child {
+    margin-bottom: 0;
+  }
+
+  .grid-featured {
+    grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
+  }
+</style>

@@ -1,0 +1,188 @@
+---
+import TechBadge from './TechBadge.astro';
+import type { Project } from '../data/types';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+interface Props {
+  project: Project;
+  /** 主要プロダクト用の大きいカードにするか */
+  large?: boolean;
+}
+
+const { project, large = false } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const statusLabel = t(`status.${project.status}` as const);
+---
+
+<article class:list={['card', { 'card-large': large }]} data-status={project.status}>
+  <div class="card-head">
+    <h3 class="card-title">{project.name}</h3>
+    <span class="status" data-status={project.status}>{statusLabel}</span>
+  </div>
+
+  <p class="card-repo">{project.repo}</p>
+  <p class="card-description">{project.description[lang]}</p>
+
+  <ul class="tech-list">
+    {project.tech.map((tech) => (
+      <li><TechBadge label={tech} /></li>
+    ))}
+  </ul>
+
+  <div class="card-foot">
+    <div class="card-meta">
+      <span>{t('projects.since')} {project.startedAt}</span>
+      <span aria-hidden="true">·</span>
+      <span>{t('projects.updated')} {project.updatedAt}</span>
+      {project.license && (
+        <>
+          <span aria-hidden="true">·</span>
+          <span>{project.license}</span>
+        </>
+      )}
+    </div>
+    <div class="card-links">
+      <a href={project.url} rel="noopener" target="_blank">
+        {t('projects.repo')}
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+      {project.homepage && (
+        <a href={project.homepage} rel="noopener" target="_blank">
+          {t('projects.demo')}
+          <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+      )}
+    </div>
+  </div>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    height: 100%;
+    padding: 1.35rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  }
+
+  .card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .card-large {
+    padding: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .card-title {
+    font-size: 1.15rem;
+  }
+
+  .card-large .card-title {
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  }
+
+  .status {
+    flex: 0 0 auto;
+    padding: 0.1rem 0.6rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.7;
+    white-space: nowrap;
+  }
+
+  .status[data-status='active'] {
+    color: var(--status-active);
+    background: var(--status-active-bg);
+  }
+
+  .status[data-status='maintenance'] {
+    color: var(--status-maintenance);
+    background: var(--status-maintenance-bg);
+  }
+
+  .status[data-status='experiment'] {
+    color: var(--status-experiment);
+    background: var(--status-experiment-bg);
+  }
+
+  .card-repo {
+    margin-top: -0.55rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .card-description {
+    color: var(--text-muted);
+    font-size: 0.93rem;
+    line-height: 1.8;
+  }
+
+  .card-large .card-description {
+    color: var(--text);
+  }
+
+  .tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .card-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-top: auto;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .card-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .card-links a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .card-links a:hover {
+    text-decoration: underline;
+  }
+
+  .arrow {
+    font-size: 0.75em;
+  }
+</style>

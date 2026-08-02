@@ -1,0 +1,20 @@
+{
+  "handle": "vdnih",
+  "name": "vdnih",
+  "avatar": "https://avatars.githubusercontent.com/u/59527453?v=4",
+  "tagline": {
+    "ja": "作りたいものを、作りたい形で。",
+    "en": "Building the things I want to exist, the way I want them to be."
+  },
+  "intro": {
+    "ja": "AI エージェント、Flutter アプリ、Web サービスを、アイデアから運用まで一人で作っています。",
+    "en": "I build AI agents, Flutter apps, and web services end to end — from idea to production, mostly solo."
+  },
+  "bio": {
+    "ja": "個人開発者です。要件定義から設計・実装・デプロイまで一人で回すことが多く、Flutter と Next.js を軸に、必要に応じて Python・Firebase・AWS を組み合わせています。最近は LLM を組み込んだプロダクトが中心です。\n\nお酒と旅行が好きで、その周辺のプロダクトが自然と多くなりました。作りかけのものも含めて、手を動かしたものをここに並べています。",
+    "en": "An indie developer. I usually run the whole cycle myself — requirements, design, implementation, deployment — built around Flutter and Next.js, reaching for Python, Firebase, or AWS as each project needs. Lately most of what I build has an LLM somewhere inside it.\n\nI like sake and travel, so a lot of my products ended up growing out of those. What's listed here is what I've actually built, half-finished things included."
+  },
+  "links": [
+    { "label": "GitHub", "url": "https://github.com/vdnih" }
+  ]
+}

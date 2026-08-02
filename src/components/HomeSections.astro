@@ -1,0 +1,19 @@
+---
+import Hero from './Hero.astro';
+import ProjectGrid from './ProjectGrid.astro';
+import TechStack from './TechStack.astro';
+import About from './About.astro';
+import profileData from '../data/profile.json';
+import projectsData from '../data/projects.json';
+import type { Profile, Project } from '../data/types';
+
+// 言語分岐は各コンポーネント内で Astro.url から解決するため、
+// ja / en のページはこのコンポーネントを呼ぶだけでよい。
+const profile = profileData as Profile;
+const projects = projectsData as Project[];
+---
+
+<Hero profile={profile} projects={projects} />
+<ProjectGrid projects={projects} />
+<TechStack projects={projects} />
+<About profile={profile} />

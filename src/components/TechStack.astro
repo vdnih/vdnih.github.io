@@ -1,0 +1,47 @@
+---
+import TechBadge from './TechBadge.astro';
+import type { Project } from '../data/types';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// projects.json の tech を集計する。ハードコードせずデータ側だけで増減できるようにする。
+const counts = new Map<string, number>();
+for (const project of projects) {
+  for (const tech of project.tech) {
+    counts.set(tech, (counts.get(tech) ?? 0) + 1);
+  }
+}
+
+const ranked = [...counts.entries()].sort(
+  ([aName, aCount], [bName, bCount]) => bCount - aCount || aName.localeCompare(bName),
+);
+---
+
+<section class="section" id="stack">
+  <div class="container">
+    <h2 class="section-heading">{t('stack.title')}</h2>
+    <p class="section-lead">{t('stack.lead')}</p>
+
+    <ul class="stack-list">
+      {ranked.map(([tech, count]) => (
+        <li><TechBadge label={tech} count={count} /></li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .stack-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+</style>
