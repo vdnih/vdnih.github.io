@@ -1,0 +1,85 @@
+---
+import LangSwitcher from './LangSwitcher.astro';
+import { getLangFromUrl, localizePath, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const home = localizePath('/', lang);
+
+const nav = [
+  { href: '#projects', label: t('nav.projects') },
+  { href: '#stack', label: t('nav.stack') },
+  { href: '#about', label: t('nav.about') },
+];
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href={home}>vdnih</a>
+    <nav class="nav" aria-label={t('nav.projects')}>
+      <ul>
+        {nav.map((item) => (
+          <li><a href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <LangSwitcher />
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 3.75rem;
+  }
+
+  .brand {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav {
+    margin-inline-start: auto;
+  }
+
+  .nav ul {
+    display: flex;
+    gap: clamp(0.75rem, 3vw, 1.75rem);
+  }
+
+  .nav a {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .nav a:hover {
+    color: var(--text);
+  }
+
+  @media (max-width: 34rem) {
+    .nav {
+      display: none;
+    }
+
+    .header-inner :global(.lang-switcher) {
+      margin-inline-start: auto;
+    }
+  }
+</style>

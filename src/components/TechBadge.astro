@@ -1,0 +1,36 @@
+---
+interface Props {
+  label: string;
+  count?: number;
+}
+
+const { label, count } = Astro.props;
+---
+
+<span class="tech-badge">
+  {label}
+  {count !== undefined && <span class="count">{count}</span>}
+</span>
+
+<style>
+  .tech-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.18rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: var(--bg-subtle);
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    white-space: nowrap;
+  }
+
+  .count {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent-text);
+    font-variant-numeric: tabular-nums;
+  }
+</style>

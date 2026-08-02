@@ -1,0 +1,178 @@
+---
+import type { Profile, Project } from '../data/types';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+interface Props {
+  profile: Profile;
+  projects: Project[];
+}
+
+const { profile, projects } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const activeCount = projects.filter((p) => p.status === 'active').length;
+const techCount = new Set(projects.flatMap((p) => p.tech)).size;
+
+// 一番古いプロダクトではなく GitHub アカウント開設年からの通算
+const startYear = 2017;
+const years = new Date().getFullYear() - startYear;
+
+const stats = [
+  { value: String(projects.length), label: t('hero.stats.projects') },
+  { value: String(activeCount), label: t('hero.stats.active') },
+  { value: String(techCount), label: t('hero.stats.tech') },
+  { value: `${years}${t('hero.stats.sinceUnit')}`, label: t('hero.stats.since') },
+];
+
+const githubUrl = profile.links.find((link) => link.label === 'GitHub')?.url ?? `https://github.com/${profile.handle}`;
+---
+
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-text">
+      <p class="eyebrow">{t('hero.eyebrow')}</p>
+      <h1>{profile.tagline[lang]}</h1>
+      <p class="hero-bio">{profile.intro[lang]}</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="#projects">{t('hero.viewProjects')}</a>
+        <a class="button" href={githubUrl} rel="me noopener" target="_blank">{t('hero.github')}</a>
+      </div>
+    </div>
+    <img
+      class="hero-avatar"
+      src={profile.avatar}
+      alt={profile.name}
+      width="128"
+      height="128"
+      loading="eager"
+      decoding="async"
+    />
+  </div>
+
+  <div class="container">
+    <dl class="stats">
+      {stats.map((stat) => (
+        <div class="stat">
+          <dt>{stat.label}</dt>
+          <dd>{stat.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(3rem, 8vw, 5.5rem) clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .hero-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(1.5rem, 5vw, 3rem);
+  }
+
+  .hero-text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.9rem, 5.5vw, 3.1rem);
+    margin-block: 0.5rem 1.1rem;
+  }
+
+  .hero-bio {
+    color: var(--text-muted);
+    max-width: 40rem;
+  }
+
+  .hero-avatar {
+    flex: 0 0 auto;
+    width: clamp(72px, 14vw, 128px);
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    box-shadow: var(--shadow-md);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.55rem 1.15rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    background: var(--bg-elevated);
+    color: var(--text);
+    font-size: 0.92rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .button:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .button-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+
+  .button-primary:hover {
+    color: var(--bg);
+    filter: brightness(1.08);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    gap: 1px;
+    margin: clamp(2.5rem, 6vw, 3.5rem) 0 0;
+    padding: 0;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.15rem;
+    padding: 1.1rem 1.25rem;
+    background: var(--bg-elevated);
+  }
+
+  .stat dt {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .stat dd {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  @media (max-width: 34rem) {
+    .hero-inner {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+    }
+  }
+</style>

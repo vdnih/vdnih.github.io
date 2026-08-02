@@ -1,0 +1,41 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>© {year} vdnih</p>
+    <p class="built-with">
+      {t('footer.builtWith')}
+      {' '}
+      <a href="https://github.com/vdnih/vdnih.github.io" rel="noopener" target="_blank">
+        {t('footer.source')}
+      </a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding-block: 2.25rem;
+    font-size: 0.83rem;
+    color: var(--text-muted);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+  }
+
+  .built-with {
+    max-width: 40rem;
+  }
+</style>
