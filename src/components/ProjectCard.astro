@@ -23,7 +23,7 @@ const statusLabel = t(`status.${project.status}` as const);
     <span class="status" data-status={project.status}>{statusLabel}</span>
   </div>
 
-  <p class="card-repo">{project.repo}</p>
+  {project.repo && <p class="card-repo">{project.repo}</p>}
   <p class="card-description">{project.description[lang]}</p>
 
   <ul class="tech-list">
@@ -45,10 +45,12 @@ const statusLabel = t(`status.${project.status}` as const);
       )}
     </div>
     <div class="card-links">
-      <a href={project.url} rel="noopener" target="_blank">
-        {t('projects.repo')}
-        <span class="arrow" aria-hidden="true">↗</span>
-      </a>
+      {project.url && (
+        <a href={project.url} rel="noopener" target="_blank">
+          {t('projects.repo')}
+          <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+      )}
       {project.homepage && (
         <a href={project.homepage} rel="noopener" target="_blank">
           {t('projects.demo')}

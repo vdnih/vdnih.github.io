@@ -17,6 +17,23 @@
     }
   },
   {
+    "id": "my-career-app",
+    "name": "My Career App",
+    "repo": null,
+    "url": null,
+    "homepage": "https://my-career-app-559fd.web.app",
+    "featured": true,
+    "status": "active",
+    "tech": ["Flutter", "Dart", "Firebase", "Firestore"],
+    "license": null,
+    "startedAt": "2026-03",
+    "updatedAt": "2026-08",
+    "description": {
+      "ja": "女性がキャリアとプライベートの両面からライフプランを考えるためのタイムラインアプリ。規定のライフイベントをタイムラインへドラッグ&ドロップし、イベント間の依存関係や制約（「入籍の後に結婚式」など）を確認しながら組み立てられる。ゲストのままサンプルデータで試せて、ログインすると Firestore に保存される。",
+      "en": "A timeline app for planning life from both career and personal angles. Drag preset life events onto a timeline and check the dependencies and constraints between them — like marriage before wedding — as you build it out. Works with sample data as a guest; sign in and it saves to Firestore."
+    }
+  },
+  {
     "id": "sakeflow",
     "name": "sakeflow",
     "repo": "vdnih/sakeflow",
@@ -38,7 +55,7 @@
     "name": "SoliTCG",
     "repo": "vdnih/solitcg",
     "url": "https://github.com/vdnih/solitcg",
-    "homepage": null,
+    "homepage": "https://solitcg-2e2d9.web.app",
     "featured": true,
     "status": "active",
     "tech": ["Flutter", "Flame", "Dart", "Firebase"],
@@ -65,6 +82,40 @@
     "description": {
       "ja": "お酒との出会いを記録するアプリ。ボトルのラベルを撮るだけで AI が銘柄を判別して登録し、好みを学習しておすすめを返す。フロントは Flutter、バックエンドは AWS サーバーレス構成。",
       "en": "An app for recording the drinks you meet. Snap a photo of a bottle label and AI identifies and logs it, then learns your taste to recommend what to try next. Flutter on the front, AWS serverless on the back."
+    }
+  },
+  {
+    "id": "decss",
+    "name": "DECSS",
+    "repo": null,
+    "url": null,
+    "homepage": "https://decss-5026e.web.app",
+    "featured": false,
+    "status": "maintenance",
+    "tech": ["Next.js", "TypeScript", "Tailwind CSS", "Pyodide", "CodeMirror", "Firebase"],
+    "license": null,
+    "startedAt": "2026-04",
+    "updatedAt": "2026-06",
+    "description": {
+      "ja": "PC もインストールもアカウントも不要で、スマホのブラウザだけで Python の試行錯誤を楽しめる学習プラットフォーム。Pyodide でブラウザ内に Python ランタイムを持ち、Next.js の静的エクスポートとして配信している。",
+      "en": "A learning platform for playing with Python entirely inside a phone's browser — no PC, no install, no account. Pyodide runs Python client-side, served as a Next.js static export."
+    }
+  },
+  {
+    "id": "travel-log-app",
+    "name": "TravelOps",
+    "repo": null,
+    "url": null,
+    "homepage": "https://achapy-travel-log.web.app",
+    "featured": false,
+    "status": "maintenance",
+    "tech": ["Flutter", "Dart", "Firebase", "Firestore"],
+    "license": null,
+    "startedAt": "2025-09",
+    "updatedAt": "2026-04",
+    "description": {
+      "ja": "SRE の考え方を旅行の設計に持ち込んだ旅行管理プラットフォーム。旅程を信頼性の観点から組み立て、記録する。",
+      "en": "A travel management platform that brings SRE thinking to trip planning — designing and logging itineraries through a reliability lens."
     }
   },
   {
@@ -123,7 +174,7 @@
     "name": "sakeflow-log",
     "repo": "vdnih/sakeflow-log",
     "url": "https://github.com/vdnih/sakeflow-log",
-    "homepage": null,
+    "homepage": "https://sakeflow.web.app",
     "featured": false,
     "status": "experiment",
     "tech": ["Flutter", "Firebase"],

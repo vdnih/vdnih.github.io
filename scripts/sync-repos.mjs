@@ -39,6 +39,11 @@ const projects = JSON.parse(await readFile(PROJECTS_PATH, 'utf8'));
 const changes = [];
 
 for (const project of projects) {
+  if (!project.repo) {
+    console.log(`- ${project.id} (no repo, skipped)`);
+    continue;
+  }
+
   let repo;
   try {
     repo = await fetchRepo(project.repo);
