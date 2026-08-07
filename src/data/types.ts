@@ -16,10 +16,10 @@ export interface Project {
   id: string;
   /** 画面に出す表示名 */
   name: string;
-  /** owner/repo 形式 */
-  repo: string;
-  /** GitHub リポジトリ URL */
-  url: string;
+  /** owner/repo 形式。非公開リポジトリなど GitHub に出さない場合は null */
+  repo: string | null;
+  /** GitHub リポジトリ URL（無ければ null） */
+  url: string | null;
   /** デモ・公開サイトの URL（無ければ null） */
   homepage: string | null;
   /** トップに大きく出すかどうか */
