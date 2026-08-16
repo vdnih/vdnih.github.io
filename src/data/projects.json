@@ -38,16 +38,16 @@
     "name": "sakeflow",
     "repo": "vdnih/sakeflow",
     "url": "https://github.com/vdnih/sakeflow",
-    "homepage": "https://sakeflow.vercel.app",
+    "homepage": "https://sakeflow.web.app",
     "featured": true,
     "status": "active",
-    "tech": ["Flutter", "Next.js", "Firebase", "Vercel"],
+    "tech": ["Flutter", "Next.js", "Firebase"],
     "license": null,
     "startedAt": "2025-03",
-    "updatedAt": "2026-07",
+    "updatedAt": "2026-08",
     "description": {
-      "ja": "お酒と旅を楽しむためのブランド。旅行やお酒の情報を発信するブログサイト（Next.js）と、Flutter 製アプリを一つのリポジトリで運用している。",
-      "en": "A brand for enjoying sake and travel. A single repository that runs both the Next.js blog publishing travel and sake writing, and the Flutter app that goes with it."
+      "ja": "お酒と旅を楽しむためのブランド。旅行やお酒の情報を発信するブログサイト（Next.js）と、飲んだお酒を記録する Flutter 製アプリ（sakeflow-log）を一つのリポジトリで運用している。",
+      "en": "A brand for enjoying sake and travel. A single repository that runs both the Next.js blog publishing travel and sake writing, and sakeflow-log, the Flutter app for logging the drinks you've had."
     }
   },
   {
@@ -91,7 +91,7 @@
     "url": null,
     "homepage": "https://decss-5026e.web.app",
     "featured": false,
-    "status": "maintenance",
+    "status": "experiment",
     "tech": ["Next.js", "TypeScript", "Tailwind CSS", "Pyodide", "CodeMirror", "Firebase"],
     "license": null,
     "startedAt": "2026-04",
@@ -167,23 +167,6 @@
     "description": {
       "ja": "複数のプロダクトを一元管理するモノレポ。Next.js 製サイト、Flutter Web アプリ、Firebase 初期化や型定義の共通パッケージを Turborepo でまとめている。",
       "en": "A monorepo that keeps several products in one place — Next.js sites, Flutter Web apps, and shared packages for Firebase setup and type definitions, wired together with Turborepo."
-    }
-  },
-  {
-    "id": "sakeflow-log",
-    "name": "sakeflow-log",
-    "repo": "vdnih/sakeflow-log",
-    "url": "https://github.com/vdnih/sakeflow-log",
-    "homepage": "https://sakeflow.web.app",
-    "featured": false,
-    "status": "experiment",
-    "tech": ["Flutter", "Firebase"],
-    "license": null,
-    "startedAt": "2025-05",
-    "updatedAt": "2025-05",
-    "description": {
-      "ja": "飲んだお酒を記録できるアプリ。sakeflow ブランドのアプリ側の実験実装。",
-      "en": "An app for logging the drinks you've had — the experimental app-side implementation for the sakeflow brand."
     }
   },
   {
