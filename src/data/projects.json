@@ -17,20 +17,20 @@
     }
   },
   {
-    "id": "my-career-app",
-    "name": "My Career App",
-    "repo": null,
-    "url": null,
+    "id": "life-compass-tokyo",
+    "name": "ライフコンパス東京",
+    "repo": "vdnih/life-compass-tokyo",
+    "url": "https://github.com/vdnih/life-compass-tokyo",
     "homepage": "https://my-career-app-559fd.web.app",
     "featured": true,
     "status": "active",
     "tech": ["Flutter", "Dart", "Firebase", "Firestore"],
-    "license": null,
+    "license": "MIT",
     "startedAt": "2026-03",
-    "updatedAt": "2026-08",
+    "updatedAt": "2026-09",
     "description": {
-      "ja": "女性がキャリアとプライベートの両面からライフプランを考えるためのタイムラインアプリ。規定のライフイベントをタイムラインへドラッグ&ドロップし、イベント間の依存関係や制約（「入籍の後に結婚式」など）を確認しながら組み立てられる。ゲストのままサンプルデータで試せて、ログインすると Firestore に保存される。",
-      "en": "A timeline app for planning life from both career and personal angles. Drag preset life events onto a timeline and check the dependencies and constraints between them — like marriage before wedding — as you build it out. Works with sample data as a guest; sign in and it saves to Firestore."
+      "ja": "女性がキャリアとプライベートの両面からライフプランを考えるためのタイムラインアプリ。規定のライフイベントをタイムラインへドラッグ&ドロップし、イベント間の依存関係や制約（「入籍の後に結婚式」など）を確認しながら組み立てられる。Gemini によるAIコーチと女性キャリア統計オープンデータを組み合わせ、都知事杯オープンデータ・ハッカソン2026に提出。ゲストのままサンプルデータで試せて、ログインすると Firestore に保存される。",
+      "en": "A timeline app for planning life from both career and personal angles. Drag preset life events onto a timeline and check the dependencies and constraints between them — like marriage before wedding — as you build it out. Combines a Gemini-powered AI coach with open data on women's careers, submitted to the Tokyo Metropolitan Open Data Hackathon 2026. Works with sample data as a guest; sign in and it saves to Firestore."
     }
   },
   {
