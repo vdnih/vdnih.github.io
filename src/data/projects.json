@@ -6,11 +6,11 @@
     "url": "https://github.com/vdnih/eventtune",
     "homepage": null,
     "featured": true,
-    "status": "active",
+    "status": "maintenance",
     "tech": ["Next.js", "Python", "FastAPI", "Google ADK", "Gemini", "Firebase", "Cloud Run"],
     "license": "Apache-2.0",
     "startedAt": "2026-06",
-    "updatedAt": "2026-07",
+    "updatedAt": "2026-08",
     "description": {
       "ja": "イベントマーケティング専用の AI エージェント。展示会やセミナーで集まったバラバラのデータをオントロジーに統合し、根拠つきの個別フォローアップメール生成とイベント振り返り分析を行うマルチテナント SaaS。AI が案を作り人が承認する HIL 設計。",
       "en": "An AI agent built for event marketing. A multi-tenant SaaS that consolidates the messy data from trade shows and seminars into an ontology, then generates individually tailored follow-up emails and post-event analysis with traceable reasoning. Designed around a human-in-the-loop approval flow."
@@ -61,7 +61,7 @@
     "tech": ["Flutter", "Flame", "Dart", "Firebase"],
     "license": "MIT",
     "startedAt": "2025-08",
-    "updatedAt": "2026-04",
+    "updatedAt": "2026-09",
     "description": {
       "ja": "TCG 風のソリティアゲーム。対戦相手なしにカード連鎖のコンボを設計・実行する体験を狙っている。Flutter / Flame 製でブラウザ上で動作。カード効果はコマンドパターン、状態は GameState に一元化した3層構成。",
       "en": "A solitaire game with trading-card-game mechanics — designing and firing off card combos without an opponent. Built with Flutter and Flame to run in the browser, on a three-layer architecture where card effects are commands and GameState is the single source of truth."
@@ -108,7 +108,7 @@
     "url": null,
     "homepage": "https://achapy-travel-log.web.app",
     "featured": false,
-    "status": "maintenance",
+    "status": "experiment",
     "tech": ["Flutter", "Dart", "Firebase", "Firestore"],
     "license": null,
     "startedAt": "2025-09",
@@ -146,7 +146,7 @@
     "tech": ["Next.js", "TypeScript", "microCMS"],
     "license": "MIT",
     "startedAt": "2025-08",
-    "updatedAt": "2025-09",
+    "updatedAt": "2026-08",
     "description": {
       "ja": "日々のアウトプットのためのブログサイト。microCMS をヘッドレス CMS に、Next.js で構築している。",
       "en": "A blog for everyday output, built on Next.js with microCMS as the headless CMS behind it."
