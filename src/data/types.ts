@@ -11,6 +11,12 @@ export type Localized = Record<Lang, string>;
  */
 export type ProjectStatus = 'active' | 'maintenance' | 'experiment';
 
+export interface ProjectLink {
+  /** リンクの表示名 */
+  label: Localized;
+  url: string;
+}
+
 export interface Project {
   /** URL やキーに使う識別子 */
   id: string;
@@ -22,6 +28,8 @@ export interface Project {
   url: string | null;
   /** デモ・公開サイトの URL（無ければ null） */
   homepage: string | null;
+  /** リポジトリ・デモ以外の関連ページ（ハッカソンの紹介ページなど）。任意 */
+  links?: ProjectLink[];
   /** トップに大きく出すかどうか */
   featured: boolean;
   status: ProjectStatus;
