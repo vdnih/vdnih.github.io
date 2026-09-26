@@ -24,6 +24,7 @@ npm run dev      # http://localhost:4321
 サイトの内容はすべて `src/data/` の JSON に入っています。ビルド時に外部 API は叩きません。
 
 - **`src/data/projects.json`** — 掲載プロダクト。追加・削除・並び替えはこのファイルだけで完結します。
+  - `links` は任意。リポジトリ・デモ以外の関連ページ（ハッカソンの紹介ページなど）を `{ "label": { "ja", "en" }, "url" }` の配列で足せます
   - `featured: true` にすると「主要プロダクト」として上段に大きく表示されます
   - `status` は `active` / `maintenance` / `experiment`
   - `tech` は技術スタックセクションの集計にもそのまま使われます（ハードコードなし）

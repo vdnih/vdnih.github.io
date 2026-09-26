@@ -5,6 +5,12 @@
     "repo": "vdnih/eventtune",
     "url": "https://github.com/vdnih/eventtune",
     "homepage": null,
+    "links": [
+      {
+        "label": { "ja": "ProtoPedia（ハッカソン出品）", "en": "ProtoPedia (hackathon entry)" },
+        "url": "https://protopedia.net/prototype/8901"
+      }
+    ],
     "featured": true,
     "status": "maintenance",
     "tech": ["Next.js", "Python", "FastAPI", "Google ADK", "Gemini", "Firebase", "Cloud Run"],
